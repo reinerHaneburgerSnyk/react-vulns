@@ -160,13 +160,18 @@ class Users extends Component {
         'Cache': 'no-cache'
       }
     }).then(function(response) {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       return response.json();
     }).then(function(userList) {
       console.log(userList);
       this.userList = userList;
       const listItems = this.showUsers();
       this.setState({listItems: listItems})
-    }.bind(this));
+    }.bind(this)).catch(function(error) {
+      console.log('Error:', error);
+    });
   }
   showUsers() {
     return this.userList.map((user) => <tr key={user.id}>
